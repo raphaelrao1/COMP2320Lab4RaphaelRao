@@ -29,6 +29,7 @@ public class StudyMateController {
         this.subjectErrorLabel.setText("");
         this.sessionListView.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
+                    this.currentlySelected = newValue;
                     if (newValue != null) {
                         this.dayTextField.setText(String.valueOf(newValue.getDayOfWeek()));
                         this.subjectTextField.setText(newValue.getSubject());
@@ -90,5 +91,20 @@ public class StudyMateController {
 
     @FXML
     private void handleDeleteButton() {
+        if (this.currentlySelected == null) {
+            Alert warning = new Alert(Alert.AlertType.WARNING);
+            warning.setTitle("No Selection");
+            warning.setHeaderText(null);
+            warning.setContentText("Please Select a Study Session to Delete.");
+            warning.showAndWait();
+            return;
+        }
+
+        this.sessions.remove(this.currentlySelected);
+        this.dayTextField.setText("");
+        this.subjectTextField.setText("");
+        this.taskTextField.setText("");
+        this.dayErrorLabel.setText("");
+        this.subjectErrorLabel.setText("");
     }
 }
