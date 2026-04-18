@@ -1,6 +1,8 @@
 package edu.westga.comp2320.studymate.controller;
 
 import edu.westga.comp2320.studymate.model.StudySession;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -39,7 +41,18 @@ public class StudyMateController {
                     }
                 }
         );
-    }
+        this.dayTextField.textProperty().addListener(new ChangeListener<>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (newValue == null || newValue.isEmpty()) {
+                    StudyMateController.this.dayErrorLabel.setText("");
+                } else if (StudyMateController.this.isValidDay(newValue)) {
+                    StudyMateController.this.dayErrorLabel.setText("");
+                } else {
+                    StudyMateController.this.dayErrorLabel.setText("must be M, T, W, R, or F");
+                }
+            }
+        });    }
     @FXML
     private void handleAddButton() {
         this.dayErrorLabel.setText("");
